@@ -7,3 +7,11 @@
 
   background-color: var(--primary-background-color);
 }
+
+.challenge-container {
+  padding: 2rem;
+  width: calc(100% - 4rem);
+  height: calc(100% - 4rem);
+  display: flex;
+  flex-direction: column;
+}

@@ -14,6 +14,8 @@ interface ChallengeState {
   setCurrentChallengeProgress: (progress: ChallengeProgressEnum) => void;
   getCurrentChallenge: () => Promise<void>;
 
+  resetChallenge: () => void;
+
   submitFlag: (flag: string) => Promise<void>;
 }
 
@@ -58,4 +60,5 @@ export const useChallengeStore = create<ChallengeState>((set, get) => ({
       handleError(error);
     }
   },
+  resetChallenge: () => set({ ...initialStates }),
 }));
