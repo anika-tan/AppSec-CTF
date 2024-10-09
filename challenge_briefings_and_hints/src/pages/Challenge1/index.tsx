@@ -1,9 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { Header } from "../../components/Header";
 
 import * as styles from "../style.scss";
 import { HintDialog } from "../../components/HintDialog";
+import { SubmissionDialog } from "../../components/SubmissionDialog";
 
 const hints: string[] = [
   "Hint 1: I'm tired so I'm not going to tell you",
@@ -16,16 +17,30 @@ const hints: string[] = [
 
 export const Challenge1: React.FC = () => {
   const [isHintsOpen, setIsHintsOpen] = React.useState(false);
+  const [isSubmissionOpen, setIsSubmissionOpen] = React.useState(false);
 
   return (
     <>
       <div className={styles.challengeContainer}>
         <Header
-          title="Challenge 1"
+          title="Challenge 1 - Sneaky Sneak"
           onHintClick={() => {
             setIsHintsOpen(true);
           }}
         />
+        <div className={styles.challengeContent}>
+          <Typography variant="h5">
+            The content of the challenge is here mkay?
+          </Typography>
+        </div>
+        <Button
+          sx={{ alignSelf: "flex-end" }}
+          onClick={() => {
+            setIsSubmissionOpen(true);
+          }}
+        >
+          Submit
+        </Button>
       </div>
       <HintDialog
         open={isHintsOpen}
@@ -33,6 +48,17 @@ export const Challenge1: React.FC = () => {
         title="Hints"
         onCancel={() => {
           setIsHintsOpen(false);
+        }}
+      />
+      <SubmissionDialog
+        open={isSubmissionOpen}
+        title="Submission"
+        description="Submit your answer"
+        onSubmit={() => {
+          console.log("submitting flag");
+        }}
+        onCancel={() => {
+          setIsSubmissionOpen(false);
         }}
       />
     </>

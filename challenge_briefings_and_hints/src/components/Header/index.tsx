@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, Typography } from "@mui/material";
+import { IconButton, Tooltip, Typography } from "@mui/material";
 
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
@@ -28,14 +28,18 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
         <Typography variant="h1">{title}</Typography>
         <div className={styles.buttonContainer}>
           {onHintClick && (
-            <IconButton onClick={onHintClick}>
-              <LightbulbIcon />
-            </IconButton>
+            <Tooltip title="Hint">
+              <IconButton onClick={onHintClick}>
+                <LightbulbIcon />
+              </IconButton>
+            </Tooltip>
           )}
           {onResetProgressClick && (
-            <IconButton onClick={onResetProgressClick}>
-              <RestartAltIcon />
-            </IconButton>
+            <Tooltip title="Reset Progress">
+              <IconButton onClick={onResetProgressClick}>
+                <RestartAltIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
       </div>
