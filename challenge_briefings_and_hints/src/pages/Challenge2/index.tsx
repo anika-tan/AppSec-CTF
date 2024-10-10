@@ -19,7 +19,7 @@ const hints: string[] = [
   "Hint 6: FINE! Here's a hint: the flag is ****************",
 ];
 
-export const Challenge1: React.FC = () => {
+export const Challenge2: React.FC = () => {
   const [isHintsOpen, setIsHintsOpen] = React.useState(false);
   const [isSubmissionOpen, setIsSubmissionOpen] = React.useState(false);
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = React.useState(false);
@@ -36,13 +36,14 @@ export const Challenge1: React.FC = () => {
   }, [currentChallengeProgress]);
 
   const handleNextChallenge = () => {
-    setCurrentChallenge(ChallengeNumberEnum.Challenge2);
+    // For now next will be the end
+    setCurrentChallenge(ChallengeNumberEnum.END);
   };
 
   const handleSubmission = async () => {
     setIsSubmissionLoading(true);
     const isFlagCorrect = await submitFlag(
-      ChallengeNumberEnum.Challenge1,
+      ChallengeNumberEnum.Challenge2,
       "flag"
     );
     setIsSubmissionLoading(false);
@@ -64,14 +65,14 @@ export const Challenge1: React.FC = () => {
     <>
       <div className={styles.challengeContainer}>
         <Header
-          title="Challenge 1 - Sneaky Sneak"
+          title="Challenge 2 - Stealy Steal"
           onHintClick={() => {
             setIsHintsOpen(true);
           }}
         />
         <div className={styles.challengeContent}>
           <Typography variant="h5">
-            The content of Challenge 1 will be here
+            The content of Challenge 2 will be here
           </Typography>
         </div>
         {currentChallengeProgress !== ChallengeProgressEnum.COMPLETED ? (

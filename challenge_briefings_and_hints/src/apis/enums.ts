@@ -12,4 +12,5 @@ export enum ChallengeNumberEnum {
   Challenge4 = 4,
   Challenge5 = 5,
   Challenge6 = 6,
+  END = 69,
 }

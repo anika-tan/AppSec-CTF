@@ -16,7 +16,10 @@ interface ChallengeState {
 
   resetChallenge: () => void;
 
-  submitFlag: (flag: string) => Promise<void>;
+  submitFlag: (
+    challenge: ChallengeNumberEnum,
+    flag: string
+  ) => Promise<boolean>;
 }
 
 const initialStates = {
@@ -27,17 +30,31 @@ const initialStates = {
 export const useChallengeStore = create<ChallengeState>((set, get) => ({
   ...initialStates,
   setCurrentChallenge: (challenge) =>
-    set({ currentChallenge: challenge ?? ChallengeNumberEnum.NONE }),
+    set({
+      currentChallenge: challenge ?? ChallengeNumberEnum.NONE,
+      currentChallengeProgress: ChallengeProgressEnum.IN_PROGRESS,
+    }),
   setCurrentChallengeProgress: (progress) =>
     set({ currentChallengeProgress: progress }),
 
-  submitFlag: async (flag) => {
+  submitFlag: async (challenge, flag) => {
     try {
-      const response = checkStatus(await submitFlagApi(flag));
-      set({ currentChallengeProgress: ChallengeProgressEnum.COMPLETED });
+      // const response = checkStatus(await submitFlagApi(challenge, flag));
+      const success = Math.random() > 0.1;
+      console.log("Submitting flag...", challenge, flag, "Success:", success);
+
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate loading
+
+      if (success) {
+        set({ currentChallengeProgress: ChallengeProgressEnum.COMPLETED });
+        return true;
+      } else {
+        return false;
+      }
     } catch (error) {
       console.error(error);
       handleError(error);
+      return false;
     }
   },
   getCurrentChallenge: async () => {

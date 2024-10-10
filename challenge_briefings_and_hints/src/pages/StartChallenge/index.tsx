@@ -1,6 +1,6 @@
 import React from "react";
 import { useChallengeStore } from "../../zustand/apis/Challenge";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { ChallengeNumberEnum, ChallengeProgressEnum } from "../../apis/enums";
 
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";

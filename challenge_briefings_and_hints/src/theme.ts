@@ -39,29 +39,22 @@ const themeOptions: ThemeOptions = {
     },
   },
   components: {
-    MuiModal: {
-      styleOverrides: {
-        root: {
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        },
-      },
-      defaultProps: {
-        slotProps: {
-          backdrop: {
-            // sx: {
-            //   opacity: "0.8 !important",
-            // },
-          },
-        },
-      },
-    },
     MuiDialog: {
       styleOverrides: {
         paper: {
           backgroundColor: "var(--primary-background-color)",
           color: "var(--primary-font-color)",
+          width: "max(500px, 70%)",
+          // boxShadow: "none",
+        },
+      },
+      defaultProps: {
+        slotProps: {
+          backdrop: {
+            sx: {
+              opacity: "0.2 !important",
+            },
+          },
         },
       },
     },
