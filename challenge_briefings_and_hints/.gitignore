@@ -8,9 +8,9 @@
 # testing
 /coverage
 
-# production
-/build
-/dist
+# production, allow this cause i need let @anika-tan use this
+# /build
+# /dist
 
 # misc
 .DS_Store
