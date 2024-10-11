@@ -7,7 +7,7 @@ app = Flask(__name__)
 def main():
     return render_template("index.html")
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login", methods=["POST"])
 def login():
     # SQL Injection
     username = request.form['username']

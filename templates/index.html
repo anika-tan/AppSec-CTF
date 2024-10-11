@@ -8,7 +8,7 @@
     <body>
         <h1>Super Normal, Totally Not Suspicious Website</h1>
 
-        <form method="POST" action="/login">
+        <form id="myForm" onsubmit="credentialsCheck(event)">
             <label for="username"><b>Username</b></label>
             <input type="text" placeholder="Username" name="username" id="username" required>
 
@@ -19,7 +19,47 @@
         </form>
 
         <script>
-            
+            function credentialsCheck(event) {
+                // Prevent the default form submission behavior
+                event.preventDefault();
+                
+                // Get form values
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('pwd').value;
+
+                // Validating values
+                if (username != "chad") {
+                    alert("You're not chad! Who are you?")
+                } else {
+                    const list = password.split("_")
+                    if (list[3] == "n07") {
+                        if (list[0] == "SC4013") {
+                            if (list[6] == "4r3") {
+                                if (list[1] == "CTF") {
+                                    if (list[7] == "c0nfu51n9") {
+                                        if (list[2] == "AB{1m") {
+                                            if (list[4] == "c0nfu51n9") {
+                                                if (list[8] == "m3}") {
+                                                    if (list[5] == "y0u") {
+                                                        alert("Chad, you're back! :D")
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        alert("Why are you trying to be chad?")
+                    }
+                }
+
+                // Clear the form (optional)
+                document.getElementById('myForm').reset();
+
+            }
         </script>
 
     </body>
