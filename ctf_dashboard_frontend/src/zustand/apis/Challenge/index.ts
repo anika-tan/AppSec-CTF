@@ -5,16 +5,21 @@ import {
   ChallengeNumberEnum,
   ChallengeProgressEnum,
 } from "../../../apis/enums";
+import { UserModel } from "../../../apis/Auth/typings";
 
 interface ChallengeState {
   currentChallenge: ChallengeNumberEnum;
   currentChallengeProgress: ChallengeProgressEnum | null;
+  userInfo: UserModel;
 
   setCurrentChallenge: (challenge: ChallengeNumberEnum) => void;
   setCurrentChallengeProgress: (progress: ChallengeProgressEnum) => void;
   getCurrentChallenge: () => Promise<void>;
 
   resetChallenge: () => void;
+
+  setUserInfo: (userInfo: UserModel) => void;
+  resetUserInfo: () => void;
 
   submitFlag: (
     challenge: ChallengeNumberEnum,
@@ -23,6 +28,10 @@ interface ChallengeState {
 }
 
 const initialStates = {
+  userInfo: {
+    id: "",
+    username: "",
+  },
   currentChallenge: ChallengeNumberEnum.NONE,
   currentChallengeProgress: ChallengeProgressEnum.NOT_STARTED,
 };
@@ -78,4 +87,6 @@ export const useChallengeStore = create<ChallengeState>((set, get) => ({
     }
   },
   resetChallenge: () => set({ ...initialStates }),
+  setUserInfo: (userInfo) => set({ userInfo }),
+  resetUserInfo: () => set({ userInfo: initialStates.userInfo }),
 }));

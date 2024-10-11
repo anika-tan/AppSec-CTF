@@ -3,10 +3,12 @@ import { IconButton, Tooltip, Typography } from "@mui/material";
 
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 import * as styles from "./style.scss";
 import { useChallengeStore } from "../../zustand/apis/Challenge";
 import { ConfirmDialog } from "../ConfirmDialog";
+import { AuthContext } from "../../context/AuthContext";
 
 interface HeaderProps {
   title: string;
@@ -15,11 +17,17 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
   const { resetChallenge } = useChallengeStore();
+  const { logout } = React.useContext(AuthContext);
 
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+  const [isResetDialogOpen, setIsResetDialogOpen] = React.useState(false);
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = React.useState(false);
 
   const onResetProgressClick = () => {
-    setIsDeleteDialogOpen(true);
+    setIsResetDialogOpen(true);
+  };
+
+  const onLogoutClick = () => {
+    setIsLogoutDialogOpen(true);
   };
 
   return (
@@ -41,14 +49,24 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
               </IconButton>
             </Tooltip>
           )}
+          <IconButton onClick={onLogoutClick}>
+            <LogoutIcon />
+          </IconButton>
         </div>
       </div>
       <ConfirmDialog
-        open={isDeleteDialogOpen}
+        open={isResetDialogOpen}
         title="Reset Challenge"
         description="This action cannot be undone"
         onConfirm={resetChallenge}
-        onCancel={() => setIsDeleteDialogOpen(false)}
+        onCancel={() => setIsResetDialogOpen(false)}
+      />
+      <ConfirmDialog
+        open={isLogoutDialogOpen}
+        title="Logout"
+        description="Are you sure you want to logout?"
+        onConfirm={logout}
+        onCancel={() => setIsLogoutDialogOpen(false)}
       />
     </>
   );
