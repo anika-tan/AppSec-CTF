@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Nothing to See Here</title>
+    </head>
+
+    <body>
+        <h1>Super Normal, Totally Not Suspicious Website</h1>
+
+        {% if (results != NULL) %}
+            <p>{{results}}</p>
+        {% endif %}
+
+        <form action="/superlogin" method="post">
+            <label for="username"><b>Username</b></label>
+            <input type="text" placeholder="Username" name="username" id="username" required>
+
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="pwd" id="pwd" required>
+
+            <button type="submit" value="Login">Login</button>
+        </form>
+
+    </body>
+</html>
