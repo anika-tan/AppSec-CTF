@@ -1,3 +1,10 @@
+# Virtual Environment
 .venv
 env
 .conda
+
+# Environments (.env commented cause I need to push to github)
+# .env
+
+# Compiled source
+__pycache__

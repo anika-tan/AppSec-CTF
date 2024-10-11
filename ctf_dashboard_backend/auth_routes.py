@@ -1,51 +1,17 @@
-from dotenv import dotenv_values
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+
+from flask import Blueprint, request, jsonify, current_app
 from flask_bcrypt import Bcrypt
-import jwt
-import os
 from datetime import datetime, timedelta
+import jwt
 from functools import wraps
-from flask import Flask, send_from_directory
-
-# Set up env config
-config = dotenv_values(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), '.env'))
-
-# Serve from react build folder
-build_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), config.get(
-    'REACT_BUILD_PATH', '../ctf_dashboard_frontend/dist')))
-
-app = Flask(__name__, static_folder=build_path, static_url_path='')
-
-# Change as necessary
-DATABASE_PATH = os.path.join(os.path.dirname(
-    os.path.abspath(__file__)), config.get('DATABASE_PATH', './database/database.db'))
-
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DATABASE_PATH}"
-app.config['JWT_SECRET'] = config.get(
-    'JWT_SECRET', 'your_jwt_secret')  # Set your JWT secret
-app.config['JWT_EXPIRES_IN'] = int(
-    config.get('JWT_EXPIRES_IN', 3600))  # Default to 1 hour
-
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
+from .models import db, User
 
 
-# User model
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password = db.Column(db.String(128), nullable=False)
-    challenge_process = db.Column(db.String(128), nullable=True)
+# Initialize Bcrypt
+bcrypt = Bcrypt()
 
-    def __repr__(self):
-        return f"<User {self.username}>"
-
-
-# Initialize database
-with app.app_context():
-    db.create_all()
+# Create a Blueprint
+auth_bp = Blueprint('auth', __name__)
 
 
 # Middleware to authenticate token
@@ -60,7 +26,7 @@ def authenticate_token(f):
 
         try:
             payload = jwt.decode(
-                token, app.config['JWT_SECRET'], algorithms=["HS256"])
+                token, current_app.config['JWT_SECRET'], algorithms=["HS256"])
             request.userId = payload['userId']
         except jwt.ExpiredSignatureError:
             return jsonify({"error": "Token has expired."}), 403
@@ -73,7 +39,7 @@ def authenticate_token(f):
 
 
 # User registration
-@app.route("/api/auth/register", methods=["POST"])
+@auth_bp.route("/register", methods=["POST"])
 def register_user():
     data = request.json
     username = data.get("username")
@@ -98,8 +64,9 @@ def register_user():
 
     # Create and return JWT
     payload = {"userId": new_user.id, "exp": datetime.utcnow(
-    ) + timedelta(seconds=app.config['JWT_EXPIRES_IN'])}
-    token = jwt.encode(payload, app.config['JWT_SECRET'], algorithm="HS256")
+    ) + timedelta(seconds=current_app.config['JWT_EXPIRES_IN'])}
+    token = jwt.encode(
+        payload, current_app.config['JWT_SECRET'], algorithm="HS256")
 
     return jsonify({
         "status": {
@@ -117,7 +84,7 @@ def register_user():
 
 
 # User login
-@app.route("/api/auth/login", methods=["POST"])
+@auth_bp.route("/login", methods=["POST"])
 def login_user():
     data = request.json
     username = data.get("username")
@@ -138,8 +105,9 @@ def login_user():
 
     # Create and return JWT
     payload = {"userId": user.id, "exp": datetime.utcnow(
-    ) + timedelta(seconds=app.config['JWT_EXPIRES_IN'])}
-    token = jwt.encode(payload, app.config['JWT_SECRET'], algorithm="HS256")
+    ) + timedelta(seconds=current_app.config['JWT_EXPIRES_IN'])}
+    token = jwt.encode(
+        payload, current_app.config['JWT_SECRET'], algorithm="HS256")
 
     return jsonify({
         "status": {
@@ -157,7 +125,7 @@ def login_user():
 
 
 # Get user details
-@app.route("/api/auth/user", methods=["POST"])
+@auth_bp.route("/user", methods=["POST"])
 @authenticate_token
 def get_user():
     user = User.query.get(request.userId)
@@ -176,20 +144,3 @@ def get_user():
             },
         },
     })
-
-
-@app.route("/", methods=["GET"])
-def serve_react_app():
-    return send_from_directory(app.static_folder, 'index.html')
-
-
-@app.route('/<path:path>', methods=["GET"])
-def serve_static_files(path):
-    if os.path.exists(os.path.join(app.static_folder, path)):
-        return send_from_directory(app.static_folder, path)
-    else:
-        return send_from_directory(app.static_folder, 'index.html')
-
-
-if __name__ == "__main__":
-    app.run(debug=True, port=config.get('PORT', 3000))
