@@ -14,7 +14,7 @@ import {
 
 interface HintDialogProps {
   open: boolean;
-  hints: string[];
+  hints?: string[];
   title?: string;
   onCancel: () => void;
 }
@@ -29,11 +29,15 @@ export const HintDialog: React.FC<HintDialogProps> = ({
   const [currentHint, setCurrentHint] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    setCurrentHint(hints[hintIndex]);
+    if (hints && hints.length > 0) {
+      setCurrentHint(hints[hintIndex]);
+    } else {
+      setCurrentHint("Looks like there are no hints for this challenge...");
+    }
   }, [hintIndex, hints]);
 
   const incrementHint = () => {
-    if (hintIndex < hints.length - 1) {
+    if (hints && hintIndex < hints.length - 1) {
       setHintIndex(hintIndex + 1);
     }
   };
@@ -64,16 +68,17 @@ export const HintDialog: React.FC<HintDialogProps> = ({
           variant="body2"
           sx={{
             color: "var(--secondary-font-color)",
-            visibility: hints.length > 0 ? "visible" : "hidden",
+            visibility: hints && hints.length > 0 ? "visible" : "hidden",
           }}
         >
-          {hintIndex + 1} / {hints.length}
+          {hintIndex + 1} / {hints?.length ?? 1}
         </Typography>
         <IconButton
           sx={{
-            visibility: hintIndex === hints.length - 1 ? "hidden" : "visible",
+            visibility:
+              hints && hintIndex !== hints.length - 1 ? "visible" : "hidden",
           }}
-          disabled={hintIndex === hints.length}
+          disabled={hints && hintIndex === hints.length}
           onClick={incrementHint}
         >
           <KeyboardArrowRightIcon />

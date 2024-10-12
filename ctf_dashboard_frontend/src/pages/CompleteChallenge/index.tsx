@@ -31,6 +31,7 @@ export const CompleteChallenge: React.FC = () => {
           padding: "0.5rem 1rem",
         }}
         onClick={() => {
+          resetChallenge();
           setCurrentChallenge(ChallengeNumberEnum.Challenge1);
           setCurrentChallengeProgress(ChallengeProgressEnum.NOT_STARTED);
         }}

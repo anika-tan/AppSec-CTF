@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  TextField,
 } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
@@ -14,7 +15,7 @@ interface SubmissionDialogProps {
   title?: string;
   description?: string;
   content?: React.ReactNode;
-  onSubmit: () => void;
+  onSubmit: (flag: string) => void;
   onCancel: () => void;
   isLoading?: boolean;
 }
@@ -28,15 +29,29 @@ export const SubmissionDialog: React.FC<SubmissionDialogProps> = ({
   onCancel,
   isLoading = false,
 }) => {
+  const [flag, setFlag] = React.useState("");
+
   return (
     <Dialog open={open} onClose={onCancel}>
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{description}</DialogContentText>
         {content}
+        <TextField
+          value={flag}
+          onChange={(e) => setFlag(e.target.value)}
+          placeholder="Flag"
+          fullWidth
+          required
+          sx={{
+            backgroundColor: "var(--secondary-font-color)",
+            color: "var(--primary-font-color)",
+            borderRadius: "5px",
+          }}
+          disabled={isLoading}
+        />
       </DialogContent>
       <DialogActions>
-        {" "}
         <Button
           sx={{ color: "var(--warning-font-color)" }}
           onClick={onCancel}
@@ -46,7 +61,10 @@ export const SubmissionDialog: React.FC<SubmissionDialogProps> = ({
         </Button>
         <Button
           sx={{ color: "var(--secondary-font-color)" }}
-          onClick={onSubmit}
+          onClick={() => {
+            onSubmit(flag);
+            setFlag("");
+          }}
           disabled={isLoading}
           startIcon={isLoading && <CircularProgress size={16} />}
         >

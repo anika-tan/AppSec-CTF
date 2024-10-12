@@ -4,11 +4,13 @@ import { IconButton, Tooltip, Typography } from "@mui/material";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import * as styles from "./style.scss";
 import { useChallengeStore } from "../../zustand/apis/Challenge";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { AuthContext } from "../../context/AuthContext";
+import { ChallengeNumberEnum } from "../../apis/enums";
 
 interface HeaderProps {
   title: string;
@@ -16,7 +18,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
-  const { resetChallenge } = useChallengeStore();
+  const { resetChallenge, currentChallenge, setCurrentChallenge } =
+    useChallengeStore();
   const { logout } = React.useContext(AuthContext);
 
   const [isResetDialogOpen, setIsResetDialogOpen] = React.useState(false);
@@ -35,6 +38,20 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
       <div className={styles.container}>
         <Typography variant="h1">{title}</Typography>
         <div className={styles.buttonContainer}>
+          <Tooltip title="Back">
+            <IconButton
+              disabled={currentChallenge === ChallengeNumberEnum.Challenge1}
+              onClick={() => {
+                const previousChallenge = Math.max(
+                  1,
+                  currentChallenge - 1
+                ) as unknown as ChallengeNumberEnum;
+                setCurrentChallenge(previousChallenge);
+              }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          </Tooltip>
           {onHintClick && (
             <Tooltip title="Hint">
               <IconButton onClick={onHintClick}>
@@ -49,9 +66,11 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
               </IconButton>
             </Tooltip>
           )}
-          <IconButton onClick={onLogoutClick}>
-            <LogoutIcon />
-          </IconButton>
+          <Tooltip title="Logout">
+            <IconButton onClick={onLogoutClick}>
+              <LogoutIcon />
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
       <ConfirmDialog

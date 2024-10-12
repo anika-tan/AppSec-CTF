@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Link, Typography } from "@mui/material";
 import React from "react";
 import { Header } from "../../components/Header";
 
@@ -9,42 +9,49 @@ import { useChallengeStore } from "../../zustand/apis/Challenge";
 import { ChallengeNumberEnum, ChallengeProgressEnum } from "../../apis/enums";
 import { FailDialog } from "../../components/FailDialog";
 import { SuccessDialog } from "../../components/SuccessDialog";
+import { ChallengeModel } from "../../apis/Challenge/typings";
 
-const hints: string[] = [
-  "Hint 1: I'm tired so I'm not going to tell you",
-  "Hint 2: I'm still tired so I'm not going to tell you",
-  "Hint 3: why are you still here?",
-  "Hint 4: I'm not going to tell you! GO AWAY!",
-  "Hint 5: Wow, you're really persistent, aren't you?",
-  "Hint 6: FINE! Here's a hint: the flag is ****************",
-];
+interface ChallengePageProps {
+  challengeInfo: ChallengeModel;
+}
 
-export const Challenge2: React.FC = () => {
+export const ChallengePage: React.FC<ChallengePageProps> = ({
+  challengeInfo,
+}) => {
   const [isHintsOpen, setIsHintsOpen] = React.useState(false);
   const [isSubmissionOpen, setIsSubmissionOpen] = React.useState(false);
   const [isSuccessDialogOpen, setIsSuccessDialogOpen] = React.useState(false);
   const [isFailDialogOpen, setIsFailDialogOpen] = React.useState(false);
   const [isSubmissionLoading, setIsSubmissionLoading] = React.useState(false);
 
-  const { setCurrentChallenge, currentChallengeProgress, submitFlag } =
-    useChallengeStore();
+  const {
+    currentChallenge,
+    highestChallenge,
+    setCurrentChallenge,
+    currentChallengeProgress,
+    setCurrentChallengeProgress,
+    submitFlag,
+    getCurrentChallenge,
+  } = useChallengeStore();
 
   React.useEffect(() => {
-    if (currentChallengeProgress === ChallengeProgressEnum.COMPLETED) {
-      setIsSuccessDialogOpen(true);
+    if (challengeInfo.id < highestChallenge) {
+      setCurrentChallengeProgress(ChallengeProgressEnum.COMPLETED);
+    } else {
+      setCurrentChallengeProgress(ChallengeProgressEnum.NOT_STARTED);
     }
-  }, [currentChallengeProgress]);
+  }, [challengeInfo]);
 
   const handleNextChallenge = () => {
-    // For now next will be the end
-    setCurrentChallenge(ChallengeNumberEnum.END);
+    setIsSuccessDialogOpen(false);
+    getCurrentChallenge();
   };
 
-  const handleSubmission = async () => {
+  const handleSubmission = async (flag: string) => {
     setIsSubmissionLoading(true);
     const isFlagCorrect = await submitFlag(
-      ChallengeNumberEnum.Challenge2,
-      "flag"
+      challengeInfo.id as unknown as ChallengeNumberEnum,
+      flag
     );
     setIsSubmissionLoading(false);
 
@@ -65,15 +72,17 @@ export const Challenge2: React.FC = () => {
     <>
       <div className={styles.challengeContainer}>
         <Header
-          title="Challenge 2 - Stealy Steal"
+          title={challengeInfo.title}
           onHintClick={() => {
             setIsHintsOpen(true);
           }}
         />
         <div className={styles.challengeContent}>
-          <Typography variant="h5">
-            The content of Challenge 2 will be here
-          </Typography>
+          <Typography variant="h5">{challengeInfo.description}</Typography>
+          <Typography variant="h5">Click here</Typography>
+          <Link href={challengeInfo.link} target="_blank">
+            <Typography variant="h5">{challengeInfo.link}</Typography>
+          </Link>
         </div>
         {currentChallengeProgress !== ChallengeProgressEnum.COMPLETED ? (
           <Button
@@ -93,7 +102,7 @@ export const Challenge2: React.FC = () => {
       </div>
       <HintDialog
         open={isHintsOpen}
-        hints={hints}
+        hints={challengeInfo.hints}
         title="Hints"
         onCancel={() => {
           setIsHintsOpen(false);

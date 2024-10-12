@@ -1,4 +1,3 @@
-
 from flask import Blueprint, request, jsonify, current_app
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta

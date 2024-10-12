@@ -1,7 +1,9 @@
 from ctf_dashboard_backend.auth_routes import auth_bp
-from ctf_dashboard_backend.models import db
+from ctf_dashboard_backend.challenge_routes import challenge_bp
+from ctf_dashboard_backend.challenge_seeders import seed_challenges
+from ctf_dashboard_backend.models import db, Challenge
 from dotenv import dotenv_values
-from flask import Flask, send_from_directory, render_template, request
+from flask import Flask, send_from_directory
 from flask_bcrypt import Bcrypt
 import os
 
@@ -32,10 +34,14 @@ bcrypt = Bcrypt(app)
 
 # Import and register the blueprint
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(challenge_bp, url_prefix='/api/challenge')
 
 # Initialize database
 with app.app_context():
     db.create_all()
+
+    if Challenge.query.count() == 0:
+        seed_challenges()
 
 
 @app.route("/", methods=["GET"])

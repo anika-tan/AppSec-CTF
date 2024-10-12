@@ -27,13 +27,17 @@ const splashTexts = [
   "01100010 01110010 01110101 01101000",
 ];
 
-export const StartChallenge: React.FC = () => {
-  const { setCurrentChallenge, setCurrentChallengeProgress } =
-    useChallengeStore();
+interface StartChallengeProps {
+  onStartChallenge: () => void;
+}
 
+export const StartChallenge: React.FC<StartChallengeProps> = ({
+  onStartChallenge,
+}) => {
   const [splashText, setSplashText] = React.useState<string>(
     splashTexts[Math.floor(Math.random() * splashTexts.length)]
   );
+
   const onSplashTextClick = () => {
     let newSplashText = splashText;
     do {
@@ -63,10 +67,7 @@ export const StartChallenge: React.FC = () => {
           fontSize: "2rem",
           padding: "0.5rem 1rem",
         }}
-        onClick={() => {
-          setCurrentChallenge(ChallengeNumberEnum.Challenge1);
-          setCurrentChallengeProgress(ChallengeProgressEnum.NOT_STARTED);
-        }}
+        onClick={onStartChallenge}
         className={styles.startChallengeButton}
       >
         <KeyboardArrowRightIcon

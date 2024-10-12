@@ -1,22 +1,34 @@
 import { create } from "zustand";
 import { checkStatus, handleError } from "../../../apis/utils";
-import { submitFlagApi } from "../../../apis/Challenge";
+import {
+  getChallengeApi,
+  getCurrentChallengeApi,
+  resetChallengeApi,
+  submitFlagApi,
+} from "../../../apis/Challenge";
 import {
   ChallengeNumberEnum,
   ChallengeProgressEnum,
 } from "../../../apis/enums";
 import { UserModel } from "../../../apis/Auth/typings";
+import { ChallengeModel } from "../../../apis/Challenge/typings";
 
 interface ChallengeState {
   currentChallenge: ChallengeNumberEnum;
-  currentChallengeProgress: ChallengeProgressEnum | null;
+  currentChallengeProgress: ChallengeProgressEnum;
+  challengesInfo: Map<ChallengeNumberEnum, ChallengeModel>;
+  currentChallengeInfo: ChallengeModel;
   userInfo: UserModel;
+  highestChallenge: ChallengeNumberEnum;
+  isStarted: boolean;
+  setIsStarted: (isStarted: boolean) => void;
 
   setCurrentChallenge: (challenge: ChallengeNumberEnum) => void;
-  setCurrentChallengeProgress: (progress: ChallengeProgressEnum) => void;
   getCurrentChallenge: () => Promise<void>;
+  setCurrentChallengeProgress: (progress: ChallengeProgressEnum) => void;
+  getChallenge: (challengeId: number) => Promise<void>;
 
-  resetChallenge: () => void;
+  resetChallenge: () => Promise<void>;
 
   setUserInfo: (userInfo: UserModel) => void;
   resetUserInfo: () => void;
@@ -32,29 +44,30 @@ const initialStates = {
     id: "",
     username: "",
   },
-  currentChallenge: ChallengeNumberEnum.NONE,
+  currentChallenge: ChallengeNumberEnum.Challenge1,
   currentChallengeProgress: ChallengeProgressEnum.NOT_STARTED,
+  currentChallengeInfo: {} as ChallengeModel,
+
+  challengesInfo: new Map<ChallengeNumberEnum, ChallengeModel>(),
+  highestChallenge: ChallengeNumberEnum.Challenge1,
+  isStarted: false,
 };
 
 export const useChallengeStore = create<ChallengeState>((set, get) => ({
   ...initialStates,
   setCurrentChallenge: (challenge) =>
     set({
-      currentChallenge: challenge ?? ChallengeNumberEnum.NONE,
-      currentChallengeProgress: ChallengeProgressEnum.IN_PROGRESS,
+      currentChallenge: challenge,
     }),
   setCurrentChallengeProgress: (progress) =>
-    set({ currentChallengeProgress: progress }),
-
+    set({
+      currentChallengeProgress: progress,
+    }),
   submitFlag: async (challenge, flag) => {
     try {
-      // const response = checkStatus(await submitFlagApi(challenge, flag));
-      const success = Math.random() > 0.1;
-      console.log("Submitting flag...", challenge, flag, "Success:", success);
+      const response = checkStatus(await submitFlagApi(challenge, flag));
 
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate loading
-
-      if (success) {
+      if (response.data.success) {
         set({ currentChallengeProgress: ChallengeProgressEnum.COMPLETED });
         return true;
       } else {
@@ -68,25 +81,86 @@ export const useChallengeStore = create<ChallengeState>((set, get) => ({
   },
   getCurrentChallenge: async () => {
     try {
-      // Fetch the current challenge from the database
-      // const response = checkStatus(await getCurrentChallengeApi());
-      const response = {
-        data: {
-          currentChallenge:
-            get().currentChallenge ?? ChallengeNumberEnum.Challenge1,
-          currentChallengeProgress:
-            get().currentChallengeProgress ?? ChallengeProgressEnum.NOT_STARTED,
-        },
-      };
+      // If the user is at the end of the challenge, dont fetch the current challenge
+      // if (get().currentChallenge === ChallengeNumberEnum.END) {
+      //   return;
+      // }
 
-      set({ currentChallenge: response.data.currentChallenge });
-      set({ currentChallengeProgress: response.data.currentChallengeProgress });
+      // Fetch the current challenge from the database
+      const response = checkStatus(await getCurrentChallengeApi());
+
+      set({
+        currentChallenge: response.data.challenge
+          .id as unknown as ChallengeNumberEnum,
+        highestChallenge: response.data.challenge
+          .id as unknown as ChallengeNumberEnum,
+        currentChallengeInfo: response.data.challenge,
+      });
+
+      // Set is started to true if the challenge is not NONE nor END, and not Challenge 1
+      const id = response.data.challenge.id as unknown as ChallengeNumberEnum;
+      set({
+        isStarted:
+          id !== ChallengeNumberEnum.NONE &&
+          id !== ChallengeNumberEnum.END &&
+          id !== ChallengeNumberEnum.Challenge1,
+      });
+
+      checkStatus(
+        await getChallengeApi(
+          response.data.challenge.id as unknown as ChallengeNumberEnum
+        )
+      );
     } catch (error) {
       console.error(error);
       handleError(error);
     }
   },
-  resetChallenge: () => set({ ...initialStates }),
+  getChallenge: async (challengeId: number) => {
+    try {
+      get().setCurrentChallengeProgress(ChallengeProgressEnum.NOT_STARTED);
+      if (challengeId === ChallengeNumberEnum.NONE) {
+        return;
+      }
+
+      // If is saved in the store, return it
+      if (get().challengesInfo.get(challengeId as ChallengeNumberEnum)) {
+        set({
+          currentChallengeInfo: get().challengesInfo.get(
+            challengeId as ChallengeNumberEnum
+          ),
+        });
+        return;
+      }
+
+      // Fetch the challenge from the database
+      const response = checkStatus(await getChallengeApi(challengeId));
+
+      get().challengesInfo.set(
+        challengeId as ChallengeNumberEnum,
+        response.data.challenge
+      );
+
+      set({
+        currentChallengeInfo: response.data.challenge,
+      });
+    } catch (error) {
+      console.error(error);
+      handleError(error);
+    }
+  },
+  resetChallenge: async () => {
+    try {
+      checkStatus(await resetChallengeApi());
+      set({ ...initialStates });
+      checkStatus(await getCurrentChallengeApi());
+    } catch (error) {
+      console.error(error);
+      handleError(error);
+      set({ ...initialStates });
+    }
+  },
   setUserInfo: (userInfo) => set({ userInfo }),
   resetUserInfo: () => set({ userInfo: initialStates.userInfo }),
+  setIsStarted: (isStarted) => set({ isStarted }),
 }));

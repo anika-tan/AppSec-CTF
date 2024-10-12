@@ -1,7 +1,11 @@
 const baseUrl = "";
 
-export const sampleUrl = `${baseUrl}/sample`;
-export const submitFlagUrl = `${baseUrl}/submit-flag`;
+// Challenge
+export const submitFlagUrl = `${baseUrl}/api/challenge/submit`;
+export const getCurrentChallengeUrl = `${baseUrl}/api/challenge/current`;
+export const getChallengeUrl = (challengeId: number) =>
+  `${baseUrl}/api/challenge/${challengeId}`;
+export const resetChallengeUrl = `${baseUrl}/api/challenge/reset`;
 
 // Auth
 export const loginUrl = `${baseUrl}/api/auth/login`;
