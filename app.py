@@ -1,16 +1,30 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response
 import sqlite3
 
 app = Flask(__name__)
 
+
+# Challenge 1
 @app.route("/", methods=["GET"])
 def main():
     return render_template("index.html")
 
-@app.route("/login", methods=["GET", "POST"])
-def logic():
-    return render_template("superLogin.html")
+# Challenge 2
+@app.route("/account")
+def chad_account():
+    # Check if the manager cookie is already set
+    isManager = request.cookies.get('manager')
 
+    # Initializing response object
+    resp = make_response(render_template("chad_account.html", isManager=isManager))
+
+    # Set the manager cookie to "false"
+    if isManager is None: 
+        resp.set_cookie("manager", "false")
+
+    return resp
+
+# Challenge 3
 @app.route("/superlogin", methods=["GET", "POST"])
 def super_login():
     # SQL Injection

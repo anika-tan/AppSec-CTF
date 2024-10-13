@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Nothing to See Here</title>
+    </head>
+
+    <body>
+        <h1>Welcome back, Chad!</h1>
+
+        <div class="members-table">
+            <h2>Member List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Last Seen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Big Bird</td>
+                        <td>big_bird_flyer</td>
+                        <td>2024-10-13 14:35</td>
+                    </tr>
+                    <tr>
+                        <td>Ernie</td>
+                        <td>ernie_bubble_bath</td>
+                        <td>2024-10-12 09:00</td>
+                    </tr>
+                    <tr>
+                        <td>Bert</td>
+                        <td>bert_the_best</td>
+                        <td>2024-10-11 16:20</td>
+                    </tr>
+                    <tr>
+                        <td>Kermit</td>
+                        <td>kermit_the_frog</td>
+                        <td>2024-10-10 12:30</td>
+                    </tr>
+                    <tr>
+                        <td>Count Von Count</td>
+                        <td>counting_with_count</td>
+                        <td>2024-10-13 11:45</td>
+                    </tr>
+
+                    {% if (isManager) %}
+                        <tr>
+                            <td>Mickey Mouse</td>
+                            <td>mickey_mouse_1928</td>
+                            <td>2024-10-13 14:35</td>
+                        </tr>
+                        <tr>
+                            <td>Minnie Mouse</td>
+                            <td>minnie_mouse_lover</td>
+                            <td>2024-10-12 09:00</td>
+                        </tr>
+                        <tr>
+                            <td>Cookie Monster</td>
+                            <td>SC4013_CTF_AB{c00k1e_m0n5ter_4cc3ss}</td>
+                            <td>2024-10-11 16:20</td>
+                        </tr>
+                        <tr>
+                            <td>Goofy</td>
+                            <td>goofy_galavant</td>
+                            <td>2024-10-11 16:20</td>
+                        </tr>
+                        <tr>
+                            <td>Daisy Duck</td>
+                            <td>daisy_dazzle</td>
+                            <td>2024-10-10 12:30</td>
+                        </tr>
+                    {% endif %}
+        
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
