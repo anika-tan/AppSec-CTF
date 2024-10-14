@@ -1,0 +1,48 @@
+// Base button styling
+.start-challenge-button {
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.left-arrow {
+  animation: infinite 1.5s slide-left;
+}
+
+.right-arrow {
+  animation: infinite 1.5s slide-right;
+}
+
+// keyframes for making it slide left while dissapearing
+@keyframes slide-left {
+  0% {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 0;
+  }
+}
+
+// keyframes for making it slide right while dissapearing
+@keyframes slide-right {
+  0% {
+    transform: translateX(-100%);
+    opacity: 1;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 0;
+  }
+}
