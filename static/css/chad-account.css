@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: #DCCCBB;
+    color: #646E78;
+    
+}
+
+h1 {
+    font-family: 'Halant', cursive;
+    font-weight: 400;
+    font-size: 3.8rem;
+    text-align: left;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+h2 {
+    font-family: 'Halant', cursive;
+    font-weight: 400;
+    font-size: 2.5rem;
+    text-align: left;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+table {
+    margin-left: 2%;
+}
+
+table, th, td {
+    border: 1px solid #646E78;
+    border-collapse: collapse;
+    padding: 0.2rem;
+}
+
+th, td {
+    background-color: #e7e7e7;
+}
