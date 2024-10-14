@@ -116,7 +116,6 @@ def submit_flag():
         completed_users = challenge.completed_users or []
         completed_users.append(user_id)
         challenge.completed_users = completed_users
-        print(challenge.completed_users)
         db.session.commit()
 
     return jsonify({
@@ -127,6 +126,7 @@ def submit_flag():
         "data": {
             "message": "Correct flag!" if is_correct else "Incorrect flag!",
             "success": is_correct,
+            "success_message": challenge.success_message
         },
     })
 

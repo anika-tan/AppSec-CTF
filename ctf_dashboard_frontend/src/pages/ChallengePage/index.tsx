@@ -30,6 +30,7 @@ export const ChallengePage: React.FC<ChallengePageProps> = ({
     setCurrentChallenge,
     currentChallengeProgress,
     setCurrentChallengeProgress,
+    successMessage,
     submitFlag,
     getCurrentChallenge,
   } = useChallengeStore();
@@ -120,6 +121,7 @@ export const ChallengePage: React.FC<ChallengePageProps> = ({
       />
       <SuccessDialog
         open={isSuccessDialogOpen}
+        description={successMessage}
         onConfirm={handleNextChallenge}
         onCancel={() => {
           setIsSuccessDialogOpen(false);
