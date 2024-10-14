@@ -1,0 +1,54 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: #DCCCBB;
+    color: #646E78;
+    
+}
+
+h1 {
+    font-family: 'Halant', cursive;
+    font-weight: 400;
+    font-size: 3.8rem;
+    text-align: left;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 5%;
+    border-radius: 30px;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}
+  
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+.loginButton {
+    background-color: #646E78;
+    color: #ffffff;
+    padding: 2% 5%;
+    margin-top: 2%;
+    border: none;
+    width: 100%;
+    opacity: 0.7;
+}
+  
+.loginButton:hover {
+    opacity: 1;
+}
