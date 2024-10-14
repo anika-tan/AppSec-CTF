@@ -1,0 +1,46 @@
+/* theme.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
+
+body {
+  margin: 0;
+}
+
+:root {
+  --root-font-size: 16px;
+
+  /* Colors */
+  --primary-background-color: #1b1b1b;
+  --secondary-background-color: #a0c5a0;
+  --primary-selection-color: #f0f0f0;
+  --secondary-selection-color: #d6d9e3;
+
+  /* Font */
+  --font-family: "Pixelify Sans", "Roboto", sans-serif;
+  --font-size: 0.5rem;
+  --primary-font-color: #20c20e;
+  --secondary-font-color: #c7c6c6;
+  --warning-font-color: #ff0000;
+
+  /* Defaults */
+}
+
+/* Customise scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-backround-color);
+}
+
+/* Customise selection */
+
+::selection {
+  background: var(--primary-backround-color);
+  color: var(--secondary-background-color);
+}
