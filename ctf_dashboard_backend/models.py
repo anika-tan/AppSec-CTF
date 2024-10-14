@@ -21,7 +21,11 @@ class Challenge(db.Model):
     description = db.Column(db.String(128), nullable=False)
     flag = db.Column(db.String(128), nullable=False)
     link = db.Column(db.String(128), nullable=False)
+    success_message = db.Column(
+        db.String(128), nullable=False, default="Correct!")
+    points = db.Column(db.Integer, nullable=False, default=100)
     hints = db.Column(db.JSON, nullable=True)
+    completed_users = db.Column(db.JSON, nullable=False)
 
     def __repr__(self):
         return f"<Challenge {self.title}>"

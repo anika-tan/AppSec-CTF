@@ -111,6 +111,14 @@ def submit_flag():
     else:
         is_correct = False
 
+    # If is correct, add user id into challenge.completed_users
+    if is_correct:
+        completed_users = challenge.completed_users or []
+        completed_users.append(user_id)
+        challenge.completed_users = completed_users
+        print(challenge.completed_users)
+        db.session.commit()
+
     return jsonify({
         "status": {
             "code": 201,
@@ -146,5 +154,29 @@ def reset_challenge():
         "data": {
             "message": "Challenge reset successfully.",
             "success": True,
+        },
+    })
+
+
+# Get all challenges' complete count
+@challenge_bp.route("/completed", methods=["GET"])
+def get_completed_challenges():
+    challenges = Challenge.query.all()
+    completed_challenges = []
+
+    for challenge in challenges:
+        completed_challenges.append({
+            "id": challenge.id,
+            "completed_users": len(challenge.completed_users),
+            "title": challenge.title,
+        })
+
+    return jsonify({
+        "status": {
+            "code": 201,
+            "message": "Challenges' complete count fetched successfully.",
+        },
+        "data": {
+            "completedChallenges": completed_challenges,
         },
     })

@@ -1,13 +1,18 @@
 import { ChallengeNumberEnum } from "../enums";
 import { HTTPMethod } from "../typings";
 import {
+  getChallengesCompletedCountUrl,
   getChallengeUrl,
   getCurrentChallengeUrl,
   resetChallengeUrl,
   submitFlagUrl,
 } from "../urls";
 import { fetchWithAuth } from "../utils";
-import { GetChallengeResponseModel, SubmitFlagResponseModel } from "./typings";
+import {
+  GetChallengeResponseModel,
+  GetChallengesCompletedCountResponseModel,
+  SubmitFlagResponseModel,
+} from "./typings";
 
 export const submitFlagApi = async (
   challenge: ChallengeNumberEnum,
@@ -58,4 +63,15 @@ export const resetChallengeApi = async () => {
   });
 
   return response.json() as unknown as GetChallengeResponseModel;
+};
+
+export const getChallengesCompletedCountApi = async () => {
+  const response = await fetchWithAuth(getChallengesCompletedCountUrl, {
+    method: HTTPMethod.GET,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  return response.json() as unknown as GetChallengesCompletedCountResponseModel;
 };

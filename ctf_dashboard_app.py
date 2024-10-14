@@ -23,6 +23,9 @@ app = Flask(
 DATABASE_PATH = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), config.get('DATABASE_PATH', './ctf_dashboard_backend/database/database.db'))
 
+if not os.path.exists(DATABASE_PATH):
+    os.makedirs(os.path.dirname(DATABASE_PATH), exist_ok=True)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{DATABASE_PATH}"
 app.config['JWT_SECRET'] = config.get(
     'JWT_SECRET', 'your_jwt_secret')  # Set your JWT secret

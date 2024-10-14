@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { checkStatus, handleError } from "../../../apis/utils";
 import {
   getChallengeApi,
+  getChallengesCompletedCountApi,
   getCurrentChallengeApi,
   resetChallengeApi,
   submitFlagApi,
@@ -37,6 +38,9 @@ interface ChallengeState {
     challenge: ChallengeNumberEnum,
     flag: string
   ) => Promise<boolean>;
+
+  leaderboard: { id: number; completed_users: number; title: string }[];
+  getLeaderboard: () => Promise<void>;
 }
 
 const initialStates = {
@@ -51,6 +55,7 @@ const initialStates = {
   challengesInfo: new Map<ChallengeNumberEnum, ChallengeModel>(),
   highestChallenge: ChallengeNumberEnum.Challenge1,
   isStarted: false,
+  leaderboard: [],
 };
 
 export const useChallengeStore = create<ChallengeState>((set, get) => ({
@@ -163,4 +168,13 @@ export const useChallengeStore = create<ChallengeState>((set, get) => ({
   setUserInfo: (userInfo) => set({ userInfo }),
   resetUserInfo: () => set({ userInfo: initialStates.userInfo }),
   setIsStarted: (isStarted) => set({ isStarted }),
+  getLeaderboard: async () => {
+    try {
+      const response = checkStatus(await getChallengesCompletedCountApi());
+      set({ leaderboard: response.data.completedChallenges });
+    } catch (error) {
+      console.error(error);
+      handleError(error);
+    }
+  },
 }));

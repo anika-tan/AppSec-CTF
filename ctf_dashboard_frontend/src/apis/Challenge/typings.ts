@@ -22,3 +22,14 @@ export interface SubmitFlagResponseModel {
     success: boolean;
   };
 }
+
+export interface GetChallengesCompletedCountResponseModel {
+  status: HTTPStatusBody;
+  data: {
+    completedChallenges: {
+      id: number;
+      completed_users: number;
+      title: string;
+    }[];
+  };
+}

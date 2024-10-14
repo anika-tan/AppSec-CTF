@@ -5,12 +5,14 @@ import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 
 import * as styles from "./style.scss";
 import { useChallengeStore } from "../../zustand/apis/Challenge";
 import { ConfirmDialog } from "../ConfirmDialog";
 import { AuthContext } from "../../context/AuthContext";
 import { ChallengeNumberEnum } from "../../apis/enums";
+import { LeaderboardDialog } from "../LeaderboardModal";
 
 interface HeaderProps {
   title: string;
@@ -24,6 +26,8 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
 
   const [isResetDialogOpen, setIsResetDialogOpen] = React.useState(false);
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = React.useState(false);
+  const [isLeaderboardDialogOpen, setIsLeaderboardDialogOpen] =
+    React.useState(false);
 
   const onResetProgressClick = () => {
     setIsResetDialogOpen(true);
@@ -31,6 +35,10 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
 
   const onLogoutClick = () => {
     setIsLogoutDialogOpen(true);
+  };
+
+  const onLeaderboardClick = () => {
+    setIsLeaderboardDialogOpen(true);
   };
 
   return (
@@ -59,6 +67,11 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
               </IconButton>
             </Tooltip>
           )}
+          <Tooltip title="Leaderboard">
+            <IconButton onClick={onLeaderboardClick}>
+              <LeaderboardIcon />
+            </IconButton>
+          </Tooltip>
           {onResetProgressClick && (
             <Tooltip title="Reset Progress">
               <IconButton onClick={onResetProgressClick}>
@@ -86,6 +99,10 @@ export const Header: React.FC<HeaderProps> = ({ title, onHintClick }) => {
         description="Are you sure you want to logout?"
         onConfirm={logout}
         onCancel={() => setIsLogoutDialogOpen(false)}
+      />
+      <LeaderboardDialog
+        open={isLeaderboardDialogOpen}
+        onCancel={() => setIsLeaderboardDialogOpen(false)}
       />
     </>
   );

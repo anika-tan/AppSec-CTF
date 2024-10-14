@@ -8,3 +8,6 @@ env
 
 # Compiled source
 __pycache__
+
+# Whatever this is
+.vscode

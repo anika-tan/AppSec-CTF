@@ -1,12 +1,12 @@
 import React from "react";
-import { useChallengeStore } from "../../zustand/apis/Challenge";
 import { Box, Button, Typography } from "@mui/material";
-import { ChallengeNumberEnum, ChallengeProgressEnum } from "../../apis/enums";
 
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 
 import * as styles from "./style.scss";
+import { LeaderboardDialog } from "../../components/LeaderboardModal";
 
 const splashTexts = [
   "Are you ready? Of course you are!",
@@ -38,6 +38,9 @@ export const StartChallenge: React.FC<StartChallengeProps> = ({
     splashTexts[Math.floor(Math.random() * splashTexts.length)]
   );
 
+  const [isLeaderboardDialogOpen, setIsLeaderboardDialogOpen] =
+    React.useState(false);
+
   const onSplashTextClick = () => {
     let newSplashText = splashText;
     do {
@@ -48,49 +51,66 @@ export const StartChallenge: React.FC<StartChallengeProps> = ({
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "calc(100% - 2rem)",
-        justifyContent: "center",
-        paddingBottom: "2rem",
-        gap: "1rem",
-      }}
-    >
-      <Typography variant="h4" sx={{ color: "var(--secondary-font-color)" }}>
-        Welcome to the challenge!
-      </Typography>
-      <Button
+    <>
+      <Box
         sx={{
-          fontSize: "2rem",
-          padding: "0.5rem 1rem",
-        }}
-        onClick={onStartChallenge}
-        className={styles.startChallengeButton}
-      >
-        <KeyboardArrowRightIcon
-          sx={{ fontSize: "inherit" }}
-          className={styles.rightArrow}
-        />
-        Start Challenge
-        <KeyboardArrowLeftIcon
-          sx={{ fontSize: "inherit" }}
-          className={styles.leftArrow}
-        />
-      </Button>
-      <Typography
-        onClick={onSplashTextClick}
-        variant="h5"
-        sx={{
-          cursor: "default",
-          color: "var(--secondary-font-color)",
-          userSelect: "none",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+          height: "calc(100% - 2rem)",
+          justifyContent: "center",
+          paddingBottom: "2rem",
+          gap: "1rem",
         }}
       >
-        {splashText}
-      </Typography>
-    </Box>
+        <LeaderboardIcon
+          sx={{
+            fontSize: "5rem",
+            color: "var(--secondary-font-color)",
+            alignSelf: "center",
+          }}
+          onClick={() => {
+            setIsLeaderboardDialogOpen(true);
+          }}
+        />
+        <Typography variant="h4" sx={{ color: "var(--secondary-font-color)" }}>
+          Welcome to the challenge!
+        </Typography>
+        <Button
+          sx={{
+            fontSize: "2rem",
+            padding: "0.5rem 1rem",
+          }}
+          onClick={onStartChallenge}
+          className={styles.startChallengeButton}
+        >
+          <KeyboardArrowRightIcon
+            sx={{ fontSize: "inherit" }}
+            className={styles.rightArrow}
+          />
+          Start Challenge
+          <KeyboardArrowLeftIcon
+            sx={{ fontSize: "inherit" }}
+            className={styles.leftArrow}
+          />
+        </Button>
+        <Typography
+          onClick={onSplashTextClick}
+          variant="h5"
+          sx={{
+            cursor: "default",
+            color: "var(--secondary-font-color)",
+            userSelect: "none",
+          }}
+        >
+          {splashText}
+        </Typography>
+      </Box>
+      <LeaderboardDialog
+        open={isLeaderboardDialogOpen}
+        onCancel={() => setIsLeaderboardDialogOpen(false)}
+      />
+    </>
   );
 };

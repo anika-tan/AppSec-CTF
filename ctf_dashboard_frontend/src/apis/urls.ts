@@ -6,6 +6,7 @@ export const getCurrentChallengeUrl = `${baseUrl}/api/challenge/current`;
 export const getChallengeUrl = (challengeId: number) =>
   `${baseUrl}/api/challenge/${challengeId}`;
 export const resetChallengeUrl = `${baseUrl}/api/challenge/reset`;
+export const getChallengesCompletedCountUrl = `${baseUrl}/api/challenge/completed`;
 
 // Auth
 export const loginUrl = `${baseUrl}/api/auth/login`;
