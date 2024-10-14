@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Nunito Sans', sans-serif;
+    background-color: #DCCCBB;
+    color: #646E78;
+    
+}
+
+h1 {
+    font-family: 'Halant', cursive;
+    font-weight: 400;
+    font-size: 3.8rem;
+    text-align: left;
+    margin-top: 2%;
+    margin-left: 2%;
+}
+
+.gallery {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: stretch;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.gallery a {
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+}
+
+.gallery a:hover {
+    color: #fff;
+}
+
+.card {
+    width: 18rem;
+    display: flex;
+    flex-flow: column wrap;
+    margin: 10px;
+    border: 0;
+}
+
+.card .card-body {
+    background-color: #596B5F;
+    color: #FFE1C8;
+}
+
+img {
+    height: 187px;
+    width: 285px;
+    object-fit: cover;
+}
+
+.price {
+    font-weight: 400;
+    font-size: 1.25em;
+    margin: 0;
+}
+
+.dogName {
+    font-size: 1.5em;
+    font-family: 'Halant', cursive;
+    font-weight: 400;
+    margin: 0;
+}
+
+.location {
+    font-weight: 300;
+    font-style: italic;
+    font-size: 1em;
+}

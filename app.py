@@ -3,13 +3,17 @@ import sqlite3
 
 app = Flask(__name__)
 
-
 # Challenge 1
 @app.route("/", methods=["GET"])
 def main():
     return render_template("index.html")
 
 # Challenge 2
+@app.route("/login", methods=["GET"])
+def login():
+    return render_template("login.html")
+
+# Challenge 3
 @app.route("/account")
 def chad_account():
     # Check if the manager cookie is already set
@@ -24,7 +28,7 @@ def chad_account():
 
     return resp
 
-# Challenge 3
+# Challenge 4
 @app.route("/superlogin", methods=["GET", "POST"])
 def super_login():
     # SQL Injection
