@@ -74,81 +74,69 @@ def super_login():
 OWNER_SESSION_ID = "1234"
 
 
-def sanitize_fields(fields):
-    # Allow alphabetic characters and whitespace
-    return [field for field in fields if re.match(r'^[a-zA-Z\s]+$', field)]
-
-
-# Challenge 6
-@app.route("ownerAccount/activity", methods=["GET", "POST"])
+# Challenge 6 & 7
+@app.route("/ownerAccount", methods=["GET", "POST"])
 def owner_account_activity():
     results = None
     if request.method == "POST":
-        form = request.form
-        session_id = request.cookies.get('session_id')
+        if request.path == "/ownerAccount/activity":
+            form = request.form
+            session_id = request.cookies.get('session_id')
 
-        # This is the table name
-        table_name = form['data']
+            # This is the table name
+            table_name = form['data']
 
-        # This is the type of data that the user request
-        request_fields = form['data_types']
-        sanitized_fields = [
-            field for field in request_fields if re.match(r'^[a-zA-Z\s]+$', field)]
+            # This is the type of data that the user request
+            request_fields = form['data_types']
+            sanitized_fields = [
+                field for field in request_fields if re.match(r'^[a-zA-Z\s]+$', field)]
 
-        # Request query from the search input (see Challenge 7)
-        request_query = form["search_query"]
+            # Request query from the search input (see Challenge 7)
+            request_query = form["search_query"]
 
-        # Connect to the database
-        conn = sqlite3.connect("database.db")
-        c = conn.cursor()
+            # Connect to the database
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
 
-        # Check if session_id is correct or not
-        if session_id != OWNER_SESSION_ID:
-            abort(403)
+            # Check if session_id is correct or not
+            if session_id != OWNER_SESSION_ID:
+                abort(403)
 
-        if len(sanitized_fields) == 0:
-            abort(403)
+            if len(sanitized_fields) == 0:
+                abort(403)
 
-        db_request_fields = ", ".join(sanitized_fields)
+            db_request_fields = ", ".join(sanitized_fields)
 
-        if table_name == "ledger":
-            c.execute(f"SELECT {db_request_fields} FROM ledger")
-            results = c.fetchall()
-        elif table_name == "sg_clients":
-            c.execute(f"SELECT {db_request_fields} FROM sg_clients")
-            results = c.fetchall()
-        elif request_query:
-            # sanitize the input by removing non-alphanumeric characters
-            sanitized_request_query = ''.join(
-                e for e in request_query if re.match(r'^\w+$', e))
+            if table_name == "ledger":
+                c.execute(f"SELECT {db_request_fields} FROM ledger")
+                results = c.fetchall()
+            elif table_name == "sg_clients":
+                c.execute(f"SELECT {db_request_fields} FROM sg_clients")
+                results = c.fetchall()
+            elif request_query:
+                # sanitize the input by removing non-alphanumeric characters
+                sanitized_request_query = ''.join(
+                    e for e in request_query if re.match(r'^\w+$', e))
+                c.execute(
+                    f"SELECT names FROM sg_clients WHERE description LIKE '%{sanitized_request_query}%'")
+                results = c.fetchall()
+        elif request.path == '/ownerAccount/search':
+            form = request.form
+            session_id = request.cookies.get('session_id')
+
+            # user input
+            request_query = form["search_query"]
+
+            # Connect to the database
+            conn = sqlite3.connect("database.db")
+            c = conn.cursor()
+
+            # Check if session_id is correct or not
+            if session_id != OWNER_SESSION_ID:
+                abort(403)
+
             c.execute(
-                f"SELECT names FROM sg_clients WHERE description LIKE '%{sanitized_request_query}%'")
-            results = c.fetchall()
-
-    return render_template("owner_account.html", results=results)
-
-
-# Challenge 7
-@app.route("/ownerAccount/search", methods=["GET", "POST"])
-def owner_account_search():
-    results = None
-    if request.method == "POST":
-        form = request.form
-        session_id = request.cookies.get('session_id')
-
-        # user input
-        request_query = form["search_query"]
-
-        # Connect to the database
-        conn = sqlite3.connect("database.db")
-        c = conn.cursor()
-
-        # Check if session_id is correct or not
-        if session_id != OWNER_SESSION_ID:
-            abort(403)
-
-        c.execute(
-            f"SELECT * FROM sg_clients_v2 WHERE description LIKE '%{request_query}%'")
+                f"SELECT * FROM sg_clients_v2 WHERE description LIKE '%{request_query}%'")
 
     return render_template("owner_account.html", results=results)
 
