@@ -71,28 +71,25 @@ def super_login():
     return render_template("superLogin.html", results=results, success=success)
 
 
-OWNER_SESSION_ID = "1234"
+OWNER_SESSION_ID = None  # Change this to something else later
 
 
 # Challenge 6 & 7
-@app.route("/ownerAccount", methods=["GET", "POST"])
-def owner_account_activity():
+@app.route("/ownerAccount", defaults={'subpath': ''}, methods=["GET"])
+@app.route("/ownerAccount/<path:subpath>", methods=["GET", "POST"])
+def owner_account(subpath):
     results = None
     if request.method == "POST":
-        if request.path == "/ownerAccount/activity":
-            form = request.form
+        if subpath == "activity":
             session_id = request.cookies.get('session_id')
 
             # This is the table name
-            table_name = form['data']
+            table_name = request.form['data']
 
             # This is the type of data that the user request
-            request_fields = form['data_types']
+            request_fields = request.form['data_types']
             sanitized_fields = [
                 field for field in request_fields if re.match(r'^[a-zA-Z\s]+$', field)]
-
-            # Request query from the search input (see Challenge 7)
-            request_query = form["search_query"]
 
             # Connect to the database
             conn = sqlite3.connect("database.db")
@@ -120,12 +117,11 @@ def owner_account_activity():
                 c.execute(
                     f"SELECT names FROM sg_clients WHERE description LIKE '%{sanitized_request_query}%'")
                 results = c.fetchall()
-        elif request.path == '/ownerAccount/search':
-            form = request.form
+        elif subpath == 'search':
             session_id = request.cookies.get('session_id')
 
             # user input
-            request_query = form["search_query"]
+            request_query = request.form["search_query"]
 
             # Connect to the database
             conn = sqlite3.connect("database.db")
@@ -136,7 +132,7 @@ def owner_account_activity():
                 abort(403)
 
             c.execute(
-                f"SELECT * FROM sg_clients_v2 WHERE description LIKE '%{request_query}%'")
+                f"SELECT * FROM ledger WHERE description LIKE '%{request_query}%'")
 
     return render_template("owner_account.html", results=results)
 

@@ -22,7 +22,11 @@
   <body>
     <h1>Super Normal, Totally Not Suspicious Website</h1>
 
-    <button>refresh</button>
+    <form action="/ownerAccount/activity" method="post">
+      <input type="text" name="data" placeholder="ledger" value="ledger" style="display: none;"/>
+      <input type="text" name="data_types" placeholder="ledger" value="['names']" style="display: none;"/>
+      <button type="submit">Refresh</button>
+    </form>
 
     <!-- This should be replaced by the results thingy, need to see how to format this le... -->
     <table>
@@ -40,7 +44,7 @@
       </tr>
     </table>
 
-    <form action="/owner_account/search" method="post">
-      <input type="text" name="search_query" placeholder="Activity Name" />
+    <form action="/ownerAccount/search" method="post">
+      <input type="text" name="search_query" placeholder="Activity Name"  value=""/>
   </body>
 </html>
