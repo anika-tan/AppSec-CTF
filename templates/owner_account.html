@@ -16,35 +16,106 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/css/login.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/css/owner-account.css"
+    />
   </head>
 
   <body>
-    <h1>Super Normal, Totally Not Suspicious Website</h1>
+    <div class="container" style="background-color: transparent; padding: 2%">
+      <h1>Activity Ledger</h1>
 
-    <form action="/ownerAccount/activity" method="post">
-      <input type="text" name="data" placeholder="ledger" value="ledger" style="display: none;"/>
-      <input type="text" name="data_types" placeholder="ledger" value="['names']" style="display: none;"/>
-      <button type="submit">Refresh</button>
-    </form>
+      <!-- Search Form -->
+      <form action="/ownerAccount/search" method="post">
+        <label for="search_query">Search for an activity:</label>
+        <input
+          type="text"
+          name="search_query"
+          id="search_query"
+          placeholder="Activity Name"
+          value=""
+        />
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
 
-    <!-- This should be replaced by the results thingy, need to see how to format this le... -->
-    <table>
-      <tr>
-        <th>ID</th>
-        <th>Activity Name</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>Operation Doggo</td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Operation Neko</td>
-      </tr>
-    </table>
+      <!-- Results Table -->
+      <table class="table table-striped mt-4">
+        <thead>
+          <tr>
+            <th>Activity ID</th>
+            <th>Activity Name</th>
+          </tr>
+        </thead>
+        <tbody id="results-table-body">
+          {% if results is not none %} {% for result in results %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ result[0] }}</td>
+          </tr>
+          {% endfor %} {% endif %}
+        </tbody>
+      </table>
 
-    <form action="/ownerAccount/search" method="post">
-      <input type="text" name="search_query" placeholder="Activity Name"  value=""/>
+      <!-- Refresh Form -->
+      <form id="refreshForm" action="/api/ownerAccount/activity" method="post">
+        <input type="hidden" name="data" value="ledger" />
+        <input type="hidden" name="data_types" value="name" />
+        <button
+          class="btn btn-secondary"
+          type="submit"
+          id="ledger-refresh-button"
+        >
+          Refresh
+        </button>
+      </form>
+    </div>
+
+    <!-- AJAX Script -->
+    <script>
+      $(document).ready(function () {
+        $("#refreshForm").on("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          $.ajax({
+            url: $(this).attr("action"),
+            method: $(this).attr("method"),
+            data: $(this).serialize(),
+            dataType: "json", // Expect JSON response
+            success: function (response) {
+              // Clear the existing table body
+              $("#results-table-body").empty();
+
+              if (response.results && response.results.length > 0) {
+                // Populate the table with the new data
+                response.results.forEach(function (result, index) {
+                  $("#results-table-body").append(
+                    "<tr><td>" +
+                      (index + 1) +
+                      "</td><td>" +
+                      result[0] +
+                      "</td></tr>"
+                  );
+                });
+              } else {
+                // If no results, display a message
+                $("#results-table-body").append(
+                  "<tr><td colspan='2'>No activities found.</td></tr>"
+                );
+              }
+            },
+            error: function (xhr, status, error) {
+              console.error("Error:", error);
+              alert(
+                "An error occurred while fetching the ledger. Please try again."
+              );
+            },
+          });
+        });
+      });
+    </script>
   </body>
 </html>
