@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, make_response, redirect, url_for, abort
 import sqlite3
 import re
+import base64
 
 app = Flask(__name__)
 
@@ -113,11 +114,13 @@ def owner_account_ledger():
     if not re.match(r'^[a-zA-Z_\s]+$', data):
         abort(403)
     elif data == 'sg_clients':
-        results = {
-            "oioioi": """ [-] ERROR: Database not found
+        log_message = b""" [-] ERROR: Database not found
             [!] LOG: Database under migration, see sg_clients_migration_asdfasdf(100 % completed)
             [!] LOG: Database under maintenance(40 % completed)
             [!] LOG: Please revisit us the next day"""
+        encoded_log_message = base64.b64encode(log_message).decode('utf-8')
+        results = {
+            "oioioi": encoded_log_message
         }
         return {"results": results}
 

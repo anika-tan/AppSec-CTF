@@ -36,6 +36,10 @@ export const HintDialog: React.FC<HintDialogProps> = ({
     }
   }, [hintIndex, hints]);
 
+  React.useEffect(() => {
+    setHintIndex(0);
+  }, [hints]);
+
   const incrementHint = () => {
     if (hints && hintIndex < hints.length - 1) {
       setHintIndex(hintIndex + 1);
