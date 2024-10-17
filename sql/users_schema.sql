@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS users;
 
-CREATE TABLE users (
+CREATE TABLE superusers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
     password TEXT NOT NULL

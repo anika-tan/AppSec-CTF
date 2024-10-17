@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS ledger (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL,
+		amount REAL NOT NULL,
+		date TEXT NOT NULL,
+		person TEXT NOT NULL,
+		details TEXT
+);
+
+CREATE TABLE IF NOT EXISTS sg_clients_migration_asdfasdf (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		name TEXT NOT NULL,
+		password TEXT NOT NULL
+);

@@ -20,6 +20,7 @@ export interface SubmitFlagResponseModel {
   data: {
     message: string;
     success: boolean;
+    success_message: string;
   };
 }
 

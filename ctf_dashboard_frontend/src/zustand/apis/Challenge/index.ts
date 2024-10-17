@@ -22,6 +22,8 @@ interface ChallengeState {
   userInfo: UserModel;
   highestChallenge: ChallengeNumberEnum;
   isStarted: boolean;
+  successMessage: string;
+
   setIsStarted: (isStarted: boolean) => void;
 
   setCurrentChallenge: (challenge: ChallengeNumberEnum) => void;
@@ -56,6 +58,7 @@ const initialStates = {
   highestChallenge: ChallengeNumberEnum.Challenge1,
   isStarted: false,
   leaderboard: [],
+  successMessage: "",
 };
 
 export const useChallengeStore = create<ChallengeState>((set, get) => ({
@@ -74,11 +77,14 @@ export const useChallengeStore = create<ChallengeState>((set, get) => ({
 
       if (response.data.success) {
         set({ currentChallengeProgress: ChallengeProgressEnum.COMPLETED });
+        set({ successMessage: response.data.success_message });
         return true;
       } else {
+        set({ successMessage: initialStates.successMessage });
         return false;
       }
     } catch (error) {
+      set({ successMessage: initialStates.successMessage });
       console.error(error);
       handleError(error);
       return false;
