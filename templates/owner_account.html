@@ -46,6 +46,7 @@
       <table class="table table-striped mt-4">
         <thead>
           <tr>
+            <th>Index</th>
             <th>Activity ID</th>
             <th>Activity Name</th>
           </tr>
@@ -55,6 +56,7 @@
           <tr>
             <td>{{ loop.index }}</td>
             <td>{{ result[0] }}</td>
+            <td>{{ result[1] }}</td>
           </tr>
           {% endfor %} {% endif %}
         </tbody>
@@ -63,6 +65,7 @@
       <!-- Refresh Form -->
       <form id="refreshForm" action="/api/ownerAccount/activity" method="post">
         <input type="hidden" name="data" value="ledger" />
+        <input type="hidden" name="data_types" value="id" />
         <input type="hidden" name="data_types" value="name" />
         <button
           class="btn btn-secondary"
@@ -97,6 +100,8 @@
                       (index + 1) +
                       "</td><td>" +
                       result[0] +
+                      "</td><td>" +
+                      result[1] +
                       "</td></tr>"
                   );
                 });

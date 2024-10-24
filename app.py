@@ -2,6 +2,8 @@ from flask import Flask, request, render_template, make_response, redirect, url_
 import sqlite3
 import re
 import base64
+import subprocess
+import os
 
 app = Flask(__name__)
 
@@ -72,8 +74,46 @@ def super_login():
     return render_template("superLogin.html", results=results, success=success)
 
 
+# Challenge 5
+def convert_csv_to_paragraph(csv_file):
+    path = f"data/{csv_file}"
+    # Convert the CSV file to a paragraph,
+    result = subprocess.run(
+        f'bash print.sh {path}', shell=True, capture_output=True, text=True)
+    return result.stdout.strip()
+
+
+# Change this to something else later
+ADMIN_SESSION_ID = "admin's-super-secret-session-id"
+
+
+@app.route("/adminAccount", methods=["GET", "POST"])
+def admin_account():
+
+    # HTML has search bar for admin account, which will be a CMD injection
+    if "search_query" in request.form:
+        query = request.form["search_query"]
+    else:
+        query = None
+
+    results = "Nothing to show"
+    session_id = request.cookies.get('session_id')
+
+    # e.g. query = "timesheet.csv && ls"
+    if query and session_id == ADMIN_SESSION_ID:
+        results = convert_csv_to_paragraph(query)
+        print(results)
+
+    # Set cookie to "admin-id" if it is not already set
+    resp = make_response(render_template(
+        "admin_account.html", results=results))
+    resp.set_cookie("session_id", ADMIN_SESSION_ID)
+
+    return resp
+
+
 # OWNER_SESSION_ID = "ze_session_id"  # Change this to something else later
-OWNER_SESSION_ID = None
+OWNER_SESSION_ID = "owner's-super-secret-session-id"
 
 
 # Challenge 6 & 7
@@ -96,9 +136,14 @@ def owner_account():
             abort(403)
 
         c.execute(
-            f"SELECT name FROM ledger WHERE name LIKE '%{request_query}%'")
+            f"SELECT id, name FROM ledger WHERE name LIKE '%{request_query}%'")
 
         results = c.fetchall()
+        print(results)
+
+    resp = make_response(render_template(
+        "owner_account.html", results=results))
+    resp.set_cookie("session_id", OWNER_SESSION_ID)
 
     return render_template("owner_account.html", results=results)
 
