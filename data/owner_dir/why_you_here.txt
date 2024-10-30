@@ -1,0 +1,8 @@
+Reminder:
+My (owner) session id -> hash sha256 -> convert to AES key (32 bit) + password
+
+Reminder 2: change my session id lol rn it's kinda insecure
+
+PS: damn my gramps very grumpy
+
+password: a029ac272a6631ee4155b115ece7f8e900811308c2b0a3657de126b183c7b3a5

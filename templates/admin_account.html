@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <title>Owner Account</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,37 +16,37 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/css/login.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/css/owner-account.css"
+    />
   </head>
-
   <body>
-    <h1>Cute Dog Store</h1>
+    <div class="container" style="background-color: transparent; padding: 2%">
+      <h1>Time Sheet</h1>
 
-    <form id="myForm" onsubmit="credentialsCheck(event)">
-      <div class="container">
-        <h2>Login</h2>
-        <label for="username"><b>Username</b></label>
+      <!-- Search Form -->
+      <form action="/adminAccount" method="post">
+        <label for="search_query">Search for a timesheet file:</label>
+        <br />
+        <label for="search_query"
+          ><i>Only "timesheet.csv" is available</i></label
+        >
         <input
           type="text"
-          placeholder="Username"
-          name="username"
-          id="username"
-          required
+          name="search_query"
+          id="search_query"
+          placeholder="Filename"
+          value=""
         />
-
-        <label for="password"><b>Password</b></label>
-        <input
-          type="password"
-          placeholder="Enter Password"
-          name="pwd"
-          id="pwd"
-          required
-        />
-
-        <button type="submit" value="Login" class="loginButton">Login</button>
-      </div>
-    </form>
-
-    <script src="../static/js/login.js"></script>
+        <button type="submit" class="btn btn-primary">Search</button>
+      </form>
+      {% for result in results.split('\n') %}
+      <p>{{ result }}</p>
+      {% endfor %}
+    </div>
   </body>
 </html>
