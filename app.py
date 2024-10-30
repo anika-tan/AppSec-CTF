@@ -28,7 +28,7 @@ def chad_account():
 
     # Initializing response object
     resp = make_response(render_template(
-        "chad_account.html", isManager=isManager))
+        "chad_account.html", isManager=True if isManager == 'true' else False))
 
     # Set the manager cookie to "false"
     if isManager is None:
