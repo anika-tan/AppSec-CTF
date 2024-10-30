@@ -5,9 +5,8 @@ import hashlib
 aes_key = "owner's-super-secret-session-id"
 owner_password = "IBoughtItAtCostco"
 
+
 # Ensure the AES key is of the correct length by padding it
-
-
 def pad_key(key):
     # Use SHA-256 and truncate to 32 bytes
     return hashlib.sha256(key.encode()).digest()[:32]
@@ -16,9 +15,8 @@ def pad_key(key):
 # Pad the key
 padded_aes_key = pad_key(aes_key)
 
+
 # Ensure the password is a multiple of 16 bytes for AES encryption
-
-
 def pad_password(password):
     while len(password) % 16 != 0:
         password += ' '
