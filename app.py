@@ -80,6 +80,7 @@ def convert_csv_to_paragraph(csv_file):
     # Convert the CSV file to a paragraph,
     result = subprocess.run(
         f'bash print.sh {path}', shell=True, capture_output=True, text=True)
+    print(result)
     return result.stdout.strip()
 
 
@@ -102,7 +103,6 @@ def admin_account():
     # e.g. query = "timesheet.csv && ls"
     if query and session_id == ADMIN_SESSION_ID:
         results = convert_csv_to_paragraph(query)
-        print(results)
 
     # Set cookie to "admin-id" if it is not already set
     resp = make_response(render_template(
@@ -139,13 +139,13 @@ def owner_account():
             f"SELECT id, name FROM ledger WHERE name LIKE '%{request_query}%'")
 
         results = c.fetchall()
-        print(results)
 
     resp = make_response(render_template(
         "owner_account.html", results=results))
+
     resp.set_cookie("session_id", OWNER_SESSION_ID)
 
-    return render_template("owner_account.html", results=results)
+    return resp
 
 
 # Challenge 6 Insecure API Endpoint

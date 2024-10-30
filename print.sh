@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# End new line with \n not \n\r yes yes yes
 # Check if the file exists and is readable
 if [[ -f "$1" && -r "$1" ]]; then
     # Read the CSV file and preserve newlines in a string variable
