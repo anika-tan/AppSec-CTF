@@ -61,5 +61,6 @@ def serve_static_files(path):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=config.get('CTF_DASHBOARD_PORT', 3000))
-    print("Scoreboard is running on '127.0.0.1:3000")
+    app.run(debug=True)
+    # app.run(debug=True, port=config.get('CTF_DASHBOARD_PORT', 3000))
+    # print("Scoreboard is running on '127.0.0.1:3000")
