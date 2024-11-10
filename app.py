@@ -197,3 +197,4 @@ def owner_account_ledger():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    print("Challenges are running")
