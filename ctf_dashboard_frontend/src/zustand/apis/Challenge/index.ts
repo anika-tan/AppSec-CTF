@@ -164,7 +164,8 @@ export const useChallengeStore = create<ChallengeState>((set, get) => ({
     try {
       checkStatus(await resetChallengeApi());
       set({ ...initialStates });
-      checkStatus(await getCurrentChallengeApi());
+      // checkStatus(await getCurrentChallengeApi());
+      await get().getCurrentChallenge();
     } catch (error) {
       console.error(error);
       handleError(error);

@@ -4,8 +4,10 @@ import re
 import base64
 import subprocess
 import os
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 # Challenge 1
@@ -196,4 +198,3 @@ def owner_account_ledger():
 
 if __name__ == "__main__":
     app.run(debug=True)
-    print("Challenges are running")
