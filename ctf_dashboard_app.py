@@ -6,6 +6,7 @@ from dotenv import dotenv_values
 from flask import Flask, send_from_directory
 from flask_bcrypt import Bcrypt
 import os
+from flask_cors import CORS
 
 # The CTF Dashboard App
 # Set up env config
@@ -18,6 +19,7 @@ build_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file
 
 app = Flask(
     __name__, static_folder=build_path, static_url_path='')
+CORS(app)
 
 # Change as necessary
 DATABASE_PATH = os.path.join(os.path.dirname(
@@ -61,4 +63,5 @@ def serve_static_files(path):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=config.get('CTF_DASHBOARD_PORT', 3000))
+    app.run(debug=True, host='0.0.0.0',
+            port=config.get('CTF_DASHBOARD_PORT', 3000), ssl_context='adhoc')
