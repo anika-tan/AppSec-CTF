@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify, current_app
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
-import jwt
 from functools import wraps
 from .models import db, User, Challenge
 from .auth_routes import authenticate_token
@@ -105,18 +104,17 @@ def submit_flag():
         user.current_challenge_id = challenge.id + 1
         if challenge.id + 1 > no_challenges:
             user.current_challenge_id = 69  # Indicates end of challenges
-        print(user.current_challenge_id)
+
+        completed_users_list = challenge.completed_users
+
+        if user_id not in completed_users_list:
+            challenge.completed_users = completed_users_list + [user_id]
+
         db.session.commit()
+
         is_correct = True
     else:
         is_correct = False
-
-    # If is correct, add user id into challenge.completed_users
-    if is_correct:
-        completed_users = challenge.completed_users or []
-        completed_users.append(user_id)
-        challenge.completed_users = completed_users
-        db.session.commit()
 
     return jsonify({
         "status": {
@@ -126,7 +124,7 @@ def submit_flag():
         "data": {
             "message": "Correct flag!" if is_correct else "Incorrect flag!",
             "success": is_correct,
-            "success_message": challenge.success_message
+            "success_message": challenge.success_message,
         },
     })
 
@@ -165,9 +163,11 @@ def get_completed_challenges():
     completed_challenges = []
 
     for challenge in challenges:
+        completed_users_list = challenge.completed_users
+
         completed_challenges.append({
             "id": challenge.id,
-            "completed_users": len(challenge.completed_users),
+            "completed_users": len(completed_users_list),
             "title": challenge.title,
         })
 
