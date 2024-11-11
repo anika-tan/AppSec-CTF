@@ -80,7 +80,6 @@ def convert_csv_to_paragraph(csv_file):
     # Convert the CSV file to a paragraph,
     result = subprocess.run(
         f'bash print.sh {path}', shell=True, capture_output=True, text=True)
-    print(result)
     return result.stdout.strip()
 
 
