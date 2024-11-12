@@ -142,10 +142,10 @@ export const CompleteChallengeData: CompleteChallengeStoryModel = {
     },
     {
       storyLine: [
-        { text: "Created by: ", duration: "2s" },
+        { text: "Created by", duration: "2s" },
         { text: "Anika :D", duration: "2s" },
         { text: " and ", duration: "1s" },
-        { text: "Bryan :/", duration: "2s" },
+        { text: "Bryan :>", duration: "2s" },
       ],
       duration: "5s",
     },
