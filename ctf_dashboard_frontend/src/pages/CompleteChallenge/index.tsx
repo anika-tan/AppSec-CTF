@@ -7,11 +7,6 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import * as styles from "../StartChallenge/style.scss";
 import { ChallengeNumberEnum, ChallengeProgressEnum } from "../../apis/enums";
 import { CompleteChallengeData } from "./utils"; // le story
-import {
-  CompleteChallengeStoryModel,
-  CompleteChallengeStoryBlockModel,
-  CompleteChallengeStoryLineModel,
-} from "./utils";
 import StoryDisplay from "./StoryDisplay";
 
 export const CompleteChallenge: React.FC = () => {
@@ -32,6 +27,22 @@ export const CompleteChallenge: React.FC = () => {
         gap: "1rem",
       }}
     >
+      {/* Skip button, position at top right */}
+      <Button
+        sx={{
+          position: "absolute",
+          top: "1rem",
+          right: "1rem",
+          fontSize: "1.5rem",
+          padding: "0.5rem 1rem",
+        }}
+        onClick={() => {
+          setIsCredits(false);
+        }}
+      >
+        Skip
+      </Button>
+
       {/* Slowly show each content here, with each block only showing its duration, and each line appearing after its duration */}
       <StoryDisplay
         currentStory={CompleteChallengeData}
