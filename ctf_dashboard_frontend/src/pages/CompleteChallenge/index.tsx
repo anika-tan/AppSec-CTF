@@ -6,11 +6,41 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 import * as styles from "../StartChallenge/style.scss";
 import { ChallengeNumberEnum, ChallengeProgressEnum } from "../../apis/enums";
+import { CompleteChallengeData } from "./utils"; // le story
+import {
+  CompleteChallengeStoryModel,
+  CompleteChallengeStoryBlockModel,
+  CompleteChallengeStoryLineModel,
+} from "./utils";
+import StoryDisplay from "./StoryDisplay";
 
 export const CompleteChallenge: React.FC = () => {
   const { resetChallenge, setCurrentChallenge, setCurrentChallengeProgress } =
     useChallengeStore();
-  return (
+
+  const [isCredits, setIsCredits] = React.useState(true);
+
+  return isCredits ? (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "calc(100% - 2rem)",
+        justifyContent: "center",
+        paddingBottom: "2rem",
+        gap: "1rem",
+      }}
+    >
+      {/* Slowly show each content here, with each block only showing its duration, and each line appearing after its duration */}
+      <StoryDisplay
+        currentStory={CompleteChallengeData}
+        onEnd={() => {
+          setIsCredits(false);
+        }}
+      />
+    </Box>
+  ) : (
     <Box
       sx={{
         display: "flex",

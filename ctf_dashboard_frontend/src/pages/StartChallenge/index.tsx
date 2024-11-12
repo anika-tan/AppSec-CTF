@@ -74,8 +74,17 @@ export const StartChallenge: React.FC<StartChallengeProps> = ({
             setIsLeaderboardDialogOpen(true);
           }}
         />
-        <Typography variant="h4" sx={{ color: "var(--secondary-font-color)" }}>
+        <Typography variant="h4" sx={{ color: "var(--primary-font-color)" }}>
           Welcome to the challenge!
+        </Typography>
+
+        <Typography variant="h5" sx={{ color: "var(--secondary-font-color)" }}>
+          You are a cybersecurity professional hired to expose the secrets of a
+          highly-covert criminal group.
+        </Typography>
+        <Typography variant="h5" sx={{ color: "var(--secondary-font-color)" }}>
+          Your task, if you choose to accept it, is to gain access into their
+          systems, gather evidence and shut down its operation.
         </Typography>
         <Button
           sx={{
