@@ -8,18 +8,24 @@
 ./env/Scripts/activate
 ```
 
-### 2. Run the scoreboard 
+### 2. Run the scoreboard
 
 ```bash
 python ctf_dashboard_app.py
 ```
 
-### 3. Open the website
+### 3. Run the challenge site
+
+```bash
+python app.py
+```
+
+### 4. Open the website
 
 Open your browser and go to `http://127.0.0.1:3000/` or whatever you see in the terminal after running the website.
 
-### 4. Stop the website
+### 5. Stop the website
 
 Press `Ctrl+C` in the terminal to stop the website.
 
-### 5. Stonks 📈
+### 6. Stonks 📈
