@@ -22,7 +22,7 @@ python app.py
 
 ### 4. Open the website
 
-Open your browser and go to `http://127.0.0.1:3000/` or whatever you see in the terminal after running the website.
+Open your browser and go to `https://127.0.0.1:3000/` or whatever you see in the terminal after running the website.
 
 ### 5. Stop the website
 

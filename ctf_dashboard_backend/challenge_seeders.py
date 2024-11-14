@@ -1,6 +1,6 @@
 from .models import db, Challenge
 
-baseUrl = "http://localhost:5000"
+baseUrl = "https://localhost:5000"
 
 # Create fake challenges and insert them into the database
 CHALLENGES = [
@@ -11,7 +11,7 @@ CHALLENGES = [
         "flag": "SC4013_CTF_AB{1_kn0w_wh3r3_1m_g01n9}",
         "link": f"{baseUrl}/",
         "hints": ["Where do the images go?"],
-        "success_message": "Well even my grandma could do that",
+        "success_message": "Concepts: Insecure Direct Object Reference, Path Traversal. Best Practices: Validate user input",
         "points": 100,
         "completed_users": []
     },
@@ -22,7 +22,7 @@ CHALLENGES = [
         "flag": "SC4013_CTF_AB{1m_n07_c0nfu51n9_y0u_4r3_c0nfu51n9_m3}",
         "link": f"{baseUrl}/login",
         "hints": ["How are websites made?"],
-        "success_message": "Ooos, sorry, looks like my kid coded this challenge",
+        "success_message": "Concepts: Reverse Engineering  Best Practices: Move critical logic to server",
         "points": 100,
         "completed_users": []
     },
@@ -33,7 +33,7 @@ CHALLENGES = [
         "flag": "SC4013_CTF_AB{c00k1e_m0n5ter_4cc3ss}",
         "link": f"{baseUrl}/account",
         "hints": [" Check your Inspector tab"],
-        "success_message": "Oh mY, aRe YoU a HaCkEr?",
+        "success_message": "Concepts: Cookie Manipulation Best Practices: Use HttpOnly / Secure flags",
         "points": 100,
         "completed_users": []
     },
@@ -44,7 +44,7 @@ CHALLENGES = [
         "flag": "SC4013_CTF_AB{sup3r_53cur3_pa55w0rd_ye5}",
         "link": f"{baseUrl}/superlogin",
         "hints": ["What happens if you put unexpected input?"],
-        "success_message": "Bet you can't beat the next one",
+        "success_message": "Concepts: SQL Injection Best Practices: Parameterised queries, input sanitisatione",
         "points": 100,
         "completed_users": []
     },
@@ -59,7 +59,7 @@ CHALLENGES = [
                   "He's old, but his great-grandson Pubescent Diddy helps him encrypt his account information that is only accessible by the great-grandson's super secure secret session id.",
                   "What kind of Algorithm for Encryption Should we use?",
                   ],
-        "success_message": "Yoooo chilllll, you're too good",
+        "success_message": "Concepts: OS Command Injection Best Practices: Input sanitisation, output encoding",
         "points": 100,
         "completed_users": []
     },
@@ -73,7 +73,7 @@ CHALLENGES = [
         "hints": ["Why is the server only returning names?",
                   "If only we could mimic the request while requesting for more information…",
                   ],
-        "success_message": "Okok you have potential, I'll admit it",
+        "success_message": "Concepts: Insecure API Endpoint Best Practices: Principle of least privilege, role-based access control",
         "points": 100,
         "completed_users": []
     },
@@ -90,7 +90,7 @@ CHALLENGES = [
                   "We have the hashed password, but we need the password in plain text!",
                   "Perhaps the password is predictable as the companies' cyber security department is not on board",
                   ],
-        "success_message": "Wonderful! See what I told you. I never doubted you.",
+        "success_message": "Concepts: SQL Injection, Weak cryptography, Weak credentials Best Practices: Input sanitisation, strong hash functions",
         "points": 100,
         "completed_users": []
     },
