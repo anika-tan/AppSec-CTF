@@ -164,9 +164,9 @@ def owner_account_ledger():
             [!] LOG: Database under migration, see sg_clients_migration_asdfasdf(100 % completed)
             [!] LOG: Database under maintenance(40 % completed)
             [!] LOG: Please revisit us the next day"""
-        encoded_log_message = base64.b64encode(log_message).decode('utf-8')
+        # encoded_log_message = base64.b64encode(log_message).decode('utf-8')
         results = {
-            "oioioi": encoded_log_message
+            "oioioi": log_message.decode('utf-8')
         }
         return {"results": results}
 
