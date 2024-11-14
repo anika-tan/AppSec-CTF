@@ -14,7 +14,7 @@
 python ctf_dashboard_app.py
 ```
 
-### 3. Run the challenge site
+### 3. Run the challenge site on a different terminal
 
 ```bash
 python app.py
